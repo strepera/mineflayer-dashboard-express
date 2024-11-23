@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="/css/styles.css" type="text/css">
+</head>
+<body>
+  <div class="terminal-container">
+    <h1> <center> <%= bot.username %> </center> </h1>
+    <div class="terminal-screen">
+      
+    </div>
+    <input type="text" class="terminal-input", placeholder="Enter text...">
+    <br>
+    <div class="terminal-info">
+      <br>Username ≫ <%= bot.username %>
+      <br>Version ≫ <%= bot.version %>
+      <br>Protocol Version ≫ <%= bot.protocolVersion %>
+    </div>
+  </div>
+</body>
+<script>
+  const inputElement = document.querySelector('.terminal-input');
+  inputElement.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      
+      const inputValue = inputElement.value.replaceAll('#', '');
+      fetch(`http://localhost:<%= websitePort %>/say?msg=${inputValue}`);
+      
+      inputElement.value = '';
+    }
+  });
+  const ws = new WebSocket('ws://localhost:<%= websocketPort %>');
+  ws.onmessage = (event) => {
+    const json = JSON.parse(event.data);
+    console.log(json);
+    const terminalScreen = document.querySelector('.terminal-screen');
+    terminalScreen.innerHTML = json.slice(-20).map(line => line.replaceAll('<', '&lt;').replaceAll('>', '&gt;')).join("<br>");
+  }
+  
+</script>
+</html>
