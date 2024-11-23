@@ -26,8 +26,8 @@ const Dashboard = {
       next();
     });
     app.set('view engine', 'ejs');
-    app.set('views', './views');
-    app.use(express.static('./public'));
+    app.set('views', import.meta.dirname + '/views');
+    app.use(express.static(import.meta.dirname + '/public'));
     
     app.get('/', (req, res) => {
       res.render('home', {log, bot, websitePort, websocketPort});
