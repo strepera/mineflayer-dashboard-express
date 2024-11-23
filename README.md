@@ -1,5 +1,4 @@
-# mineflayer-dashboard-express
-# Usage:
+# Usage
 ```js
 import mineflayer from 'mineflayer';
 import Dashboard from 'mineflayer-dashboard-express';
